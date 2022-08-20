@@ -27,8 +27,14 @@ namespace colours
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var server = Configuration["DBServer"] ?? "localhost";
+            var port = Configuration["DBPort"] ?? "1433";
+            var user = Configuration["DBUser"] ?? "SA";
+            var password = Configuration["DBPassword"] ?? "P@ssw0rd";
+            var database = Configuration["DayaBase"] ?? "colours-db";
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(""));
+            services.AddDbContext<ApplicationDbContext>(options => 
+            options.UseSqlServer($"Server={server},{port}; Initial Catalog={database}; User ID={user}; Password={password}"));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
